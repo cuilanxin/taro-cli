@@ -1,0 +1,13 @@
+{
+  "miniprogramRoot": "./",
+  "projectname": "H5",
+  "description": "今日安公众号H5商场",
+  "appid": "touristappid",
+  "setting": {
+    "urlCheck": true,
+    "es6": false,
+    "postcss": false,
+    "minified": false
+  },
+  "compileType": "miniprogram"
+}

@@ -7,7 +7,7 @@ import Taro from '@tarojs/cli';
  */
 export function savePicture({}) {
   Taro.saveVideoToPhotosAlbum({
-    filePath: erwema,
+    filePath: '路径',
     success: (res) => {
       this.props.onCancel && this.props.onCancel(res);
     },

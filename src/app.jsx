@@ -40,7 +40,19 @@ class App extends Component {
       Taro.redirectTo({ url: '/pages/login/index' });
     }
   }
-
+  // 鉴权
+  power = (path) => {
+    const token = Taro.getStorageSync('token');
+    if (!token) {
+      Taro.redirectTo({ url: '/pages/login/index' });
+      return;
+    }
+    if (typeof path === 'function') {
+      path();
+    } else {
+      Taro.navigateTo({ url: path });
+    }
+  };
   render() {
     return (
       <Provider store={store}>

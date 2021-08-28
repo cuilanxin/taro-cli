@@ -41,3 +41,31 @@ export function getLocation() {
     })
     .exec();
 }
+
+// 页面下拉 上拉
+// config = {
+//   navigationBarTitleText: '标题',
+//   enablePullDownRefresh: true, //是否开启
+//   onReachBottomDistance: 50, // 页面上拉触底事件触发时距页面底部距离，单位为 px
+//   backgroundTextStyle: 'dark', // dark / light
+// }
+// 下拉刷新
+// onPullDownRefresh() {
+//   this.props.dispatch({
+//     type: 'home/getList',
+//   });
+//   this.props.dispatch({
+//     type: 'home/getGoods',
+//   });
+//   Taro.stopPullDownRefresh(); 要关掉
+// }
+// 上拉加载更多
+// onReachBottom() {
+//   if (this.props.goods.length > 30) {
+//   } else {
+//     this.props.dispatch({
+//       type: 'home/update',
+//       payload: { goods: [...this.props.goods, ...this.props.goods] },
+//     });
+//   }
+// }

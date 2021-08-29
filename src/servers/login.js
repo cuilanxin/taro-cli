@@ -9,4 +9,9 @@ export function onLogin(params) {
 }
 
 //
-export const a = 1;
+export function sendCode(params) {
+  return request('/api/user/sendCode', {
+    method: 'POST',
+    body: params,
+  });
+}

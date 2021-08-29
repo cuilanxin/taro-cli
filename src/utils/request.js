@@ -29,7 +29,7 @@ export default async function request(api, params) {
       //     url: '/pages/login/index',
       //   });
       // }
-      return data;
+      return data.data;
     },
     (err) => {
       // eslint-disable-next-line no-console

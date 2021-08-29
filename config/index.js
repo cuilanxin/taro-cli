@@ -8,6 +8,7 @@ const config = {
     '@/utils': path.resolve(__dirname, '..', 'src/utils'),
     '@/servers': path.resolve(__dirname, '..', 'src/servers'),
     '@/': path.resolve(__dirname, '..', 'src/'),
+    '@/static': path.resolve(__dirname, '..', 'src/static'),
   },
   designWidth: 750,
   deviceRatio: {

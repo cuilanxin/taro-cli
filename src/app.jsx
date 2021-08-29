@@ -1,5 +1,6 @@
 import Taro, { Component } from '@tarojs/taro';
 import { Provider } from '@tarojs/redux';
+import 'taro-ui/dist/style/index.scss';
 // import '@tarojs/async-await';
 import dva from './utils/dva';
 import models from './models';
@@ -23,8 +24,8 @@ const store = dvaApp.getStore();
 class App extends Component {
   config = {
     pages: [
-      '/pages/home/index', // 首页
-      '/pages/login/index', // 登陆
+      'pages/home/index', // 首页
+      'pages/login/index', // 登陆
     ],
     // window: {
     //   backgroundTextStyle: 'light',
@@ -44,7 +45,7 @@ class App extends Component {
   power = (path) => {
     const token = Taro.getStorageSync('token');
     if (!token) {
-      Taro.redirectTo({ url: '/pages/login/index' });
+      Taro.navigateTo({ url: '/pages/login/index' });
       return;
     }
     if (typeof path === 'function') {

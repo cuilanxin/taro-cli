@@ -1,21 +1,53 @@
-import { onLogin } from '@/servers/login';
+import Taro from '@tarojs/taro';
+import { onLogin, sendCode } from '@/servers/login';
 
 export default {
   namespace: 'login',
   state: {
-    num: 1,
+    code: '',
   },
   effects: {
-    *handle({ payload }, { put }) {
-      yield put({
-        type: 'update',
-        payload,
+    *onLogin({ payload }, { call }) {
+      Taro.showLoading({
+        title: '登陆中',
+        mask: true,
       });
+      const data = yield call(onLogin, {
+        username: payload.phoneValue,
+        password: payload.codeValue,
+        type: payload.type,
+      });
+      Taro.hideLoading();
+      if (data && data.code === 1) {
+        Taro.setStorageSync('token', data.token);
+        Taro.getApp().power(() => Taro.reLaunch({ url: '/pages/home/index' }));
+      } else {
+        Taro.atMessage({
+          message: data.message,
+          type: 'warning',
+        });
+      }
     },
-    *onLogin(_, { call }) {
-      yield call(onLogin, { username: 'admin', password: 'admin' });
-      // console.log('data: ', data);
-      // Taro.setStorageSync('token',)
+    *sendCode({ payload }, { call }) {
+      Taro.showLoading({
+        title: '发送中',
+        mask: true,
+      });
+      const data = yield call(sendCode, payload);
+      if (data && data.code === 1) {
+        Taro.showToast({
+          title: '发送成功',
+          icon: 'success',
+          duration: 1000,
+        });
+        return data.codeValue;
+      } else if (data) {
+        Taro.atMessage({
+          message: data.message,
+          type: 'warning',
+        });
+      }
+      Taro.hideLoading();
     },
   },
   reducers: {

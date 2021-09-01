@@ -1,0 +1,36 @@
+.load-container {
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+
+  .load-container-drop {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    z-index: 0;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .load-container-pull {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    bottom: 0;
+    overflow: hidden;
+    width: 100%;
+    z-index: 0;
+  }
+
+  .load-container-scroll {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: #fff;
+  }
+}

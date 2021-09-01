@@ -8,7 +8,7 @@ export function onLogin(params) {
   });
 }
 
-//
+// 验证码
 export function sendCode(params) {
   return request('/api/user/sendCode', {
     method: 'POST',

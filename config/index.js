@@ -1,15 +1,8 @@
 const path = require('path');
 
 const config = {
-  projectName: 'H5',
-  date: '2021-8-19',
-  alias: {
-    '@/components': path.resolve(__dirname, '..', 'src/components'),
-    '@/utils': path.resolve(__dirname, '..', 'src/utils'),
-    '@/servers': path.resolve(__dirname, '..', 'src/servers'),
-    '@/': path.resolve(__dirname, '..', 'src/'),
-    '@/static': path.resolve(__dirname, '..', 'src/static'),
-  },
+  projectName: 'myApp',
+  date: '2021-8-31',
   designWidth: 750,
   deviceRatio: {
     640: 2.34 / 2,
@@ -18,41 +11,22 @@ const config = {
   },
   sourceRoot: 'src',
   outputRoot: 'dist',
-  babel: {
-    sourceMap: true,
-    presets: [
-      [
-        'env',
-        {
-          modules: false,
-        },
-      ],
-    ],
-    plugins: [
-      'transform-decorators-legacy',
-      'transform-class-properties',
-      'transform-object-rest-spread',
-      [
-        'transform-runtime',
-        {
-          helpers: false,
-          polyfill: false,
-          regenerator: true,
-          moduleName: 'babel-runtime',
-        },
-      ],
-    ],
+  alias: {
+    '@/components': path.resolve(__dirname, '..', 'src/components'),
+    '@/utils': path.resolve(__dirname, '..', 'src/utils'),
+    '@/servers': path.resolve(__dirname, '..', 'src/servers'),
+    '@/': path.resolve(__dirname, '..', 'src/'),
+    '@/static': path.resolve(__dirname, '..', 'src/static'),
   },
-  plugins: ['@tarojs/plugin-terser', '@tarojs/plugin-sass'],
+  plugins: [],
   defineConstants: {},
+  copy: {
+    patterns: [],
+    options: {},
+  },
+  framework: 'react',
   mini: {
     postcss: {
-      autoprefixer: {
-        enable: true,
-        config: {
-          browsers: ['last 3 versions', 'Android >= 4.1', 'ios >= 8'],
-        },
-      },
       pxtransform: {
         enable: true,
         config: {},
@@ -60,7 +34,7 @@ const config = {
       url: {
         enable: true,
         config: {
-          limit: 10240, // 设定转换尺寸上限
+          limit: 1024, // 设定转换尺寸上限
         },
       },
       cssModules: {
@@ -73,28 +47,15 @@ const config = {
     },
   },
   h5: {
-    // publicPath: '/',
-    publicPath: '/cuilanxin/',
+    publicPath: '/',
     staticDirectory: 'static',
-    esnextModules: ['taro-ui'],
-    router: {
-      mode: 'hash', // 'hash' browser
-      // basename: '/',
-      basename: '/cuilanxin/',
-      customRoutes: {
-        // '/pages/*': '/',
-      },
-    },
-    mini: {},
     postcss: {
       autoprefixer: {
         enable: true,
-        config: {
-          browsers: ['last 3 versions', 'Android >= 4.1', 'ios >= 8'],
-        },
+        config: {},
       },
       cssModules: {
-        enable: true, // 如不需使用 css modules 功能，则设为 false
+        enable: false, // 默认为 false，如需使用 css modules 功能，则设为 true
         config: {
           namingPattern: 'module', // 转换模式，取值为 global/module
           generateScopedName: '[name]__[local]___[hash:base64:5]',

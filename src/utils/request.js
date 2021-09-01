@@ -13,7 +13,7 @@ export default async function request(api, params) {
     header: params.header || {
       'content-type': 'application/json', // 默认值
       //   // 'Access-Control-Allow-Origin': '*',
-      // userToken: Taro.getStorageSync('token'),
+      userToken: Taro.getStorageSync('token'),
     },
   }).then(
     (data) => {

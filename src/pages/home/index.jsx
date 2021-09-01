@@ -1,69 +1,69 @@
+import React from 'react';
 import Taro from '@tarojs/taro';
-import { View, Button, Text } from '@tarojs/components';
-import { connect } from '@tarojs/redux';
+import { View } from '@tarojs/components';
+import { connect } from 'react-redux';
+import { AtMessage } from 'taro-ui';
+import Load from '@/components/load';
 import './index.scss';
 
-@connect(({ login, loading }) => ({
-  num: login.num,
-  isLoad: loading.effects['login/handle'],
+@connect(({ home }) => ({
+  data: home.data,
+  page: home.page,
+  completely: home.completely,
 }))
-class Home extends Taro.Component {
-  config = {
-    navigationBarTitleText: '首页',
-  };
-
-  // componentWillReceiveProps(nextProps) {
-  //   // eslint-disable-next-line no-console
-  //   console.log(this.props, nextProps);
-  // }
-
-  componentWillUnmount() {}
-
-  componentDidShow() {}
-
-  componentDidHide() {}
-  handle = (val) => {
+class Home extends React.Component {
+  componentDidMount() {
     this.props.dispatch({
-      type: 'login/handle',
-      payload: { num: val },
+      type: 'home/getList',
     });
-  };
+  }
+  dropChildren = () => <View>123123</View>;
   render() {
     return (
       <View className="index">
-        <Button
-          className="add_btn"
-          onClick={() => {
-            this.handle(this.props.num + 1);
-          }}
-        >
-          +
-        </Button>
-        <Button
-          className="dec_btn"
-          onClick={() => {
-            this.handle(this.props.num - 1);
-          }}
-        >
-          -
-        </Button>
-        <Button
-          className="dec_btn"
-          onClick={() => {
+        <AtMessage />
+
+        <Load
+          enableBackToTop
+          dropChildren={this.dropChildren}
+          completely={this.props.completely}
+          onDrop={() => {
             this.props.dispatch({
-              type: 'login/onLogin',
+              type: 'home/update',
+              payload: { completely: false },
             });
-            Taro.navigateTo({ url: '/pages/login/index' });
+          }}
+          onPull={() => {
+            this.props.dispatch({
+              type: 'home/update',
+              payload: { completely: false },
+            });
+          }}
+          onHandle={(type) => {
+            if (type === 'drop') {
+              this.props.dispatch({
+                type: 'home/getList',
+              });
+            } else {
+              this.props.dispatch({
+                type: 'home/update',
+                payload: { page: this.props.page++ },
+              });
+              this.props.dispatch({
+                type: 'home/getPageList',
+              });
+            }
           }}
         >
-          登陆
-        </Button>
-        <View>
-          <Text>{this.props.num}</Text>
-        </View>
-        <View>
-          <Text>Hello, World</Text>
-        </View>
+          {this.props.data.map((item, index) => (
+            <View key={index} className="load-item">
+              <View>{item.price}</View>
+
+              <View>{item.company}</View>
+              <View>{index}</View>
+            </View>
+          ))}
+        </Load>
       </View>
     );
   }

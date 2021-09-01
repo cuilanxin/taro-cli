@@ -1,10 +1,10 @@
-import Taro, { Component } from '@tarojs/taro';
-import { Provider } from '@tarojs/redux';
+import React, { Component } from 'react';
+import Taro from '@tarojs/taro';
+import { Provider } from 'react-redux';
 import 'taro-ui/dist/style/index.scss';
 // import '@tarojs/async-await';
 import dva from './utils/dva';
 import models from './models';
-import Home from './pages/home';
 import './app.scss';
 
 // 如果需要在 h5 环境中开启 React Devtools
@@ -22,19 +22,6 @@ const dvaApp = dva.createApp({
 
 const store = dvaApp.getStore();
 class App extends Component {
-  config = {
-    pages: [
-      'pages/home/index', // 首页
-      'pages/login/index', // 登陆
-    ],
-    // window: {
-    //   backgroundTextStyle: 'light',
-    //   navigationBarBackgroundColor: '#fff',
-    //   navigationBarTitleText: 'WeChat',
-    //   navigationBarTextStyle: 'black',
-    // },
-  };
-
   componentDidMount() {
     const token = Taro.getStorageSync('token');
     if (!token) {
@@ -55,12 +42,8 @@ class App extends Component {
     }
   };
   render() {
-    return (
-      <Provider store={store}>
-        <Home />
-      </Provider>
-    );
+    return <Provider store={store}>{this.props.children}</Provider>;
   }
 }
 
-Taro.render(<App />, document.getElementById('app'));
+export default App;

@@ -1,6 +1,7 @@
-import Taro, { Component } from '@tarojs/taro';
+import React from 'react';
+import Taro from '@tarojs/taro';
 import { View, Image, Text } from '@tarojs/components';
-import { connect } from '@tarojs/redux';
+import { connect } from 'react-redux';
 import { AtInput, AtMessage } from 'taro-ui';
 import logo from '@/static/image/login.png';
 import './index.scss';
@@ -8,10 +9,7 @@ import './index.scss';
 @connect(({ loading }) => ({
   loading: loading.models.login,
 }))
-class Login extends Component {
-  config = {
-    navigationBarTitleText: 'login',
-  };
+class Login extends React.Component {
   timer = Taro.createRef();
   state = {
     phoneValue: '',

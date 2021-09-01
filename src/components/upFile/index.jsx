@@ -1,3 +1,4 @@
+import React from 'react';
 import Taro from '@tarojs/taro';
 import { View, Image } from '@tarojs/components';
 import { AtActionSheet, AtActionSheetItem } from 'taro-ui';
@@ -26,14 +27,27 @@ import './index.scss';
  * @param {*} maxDuration=60  拍摄视频最长拍摄时间，单位秒
  * @param {*} camera='back'  默认拉起的是前置或者后置摄像头 front=前 back=后
  */
-class UpFile extends Taro.PureComponent {
+class UpFile extends React.PureComponent {
+  static defaultProps = {
+    type: ['image'],
+    count: 9,
+    sizeType: ['original', 'compressed'],
+    sourceType: ['album', 'camera'],
+    fail: undefined,
+    complete: undefined,
+    limit: undefined,
+    compressed: true,
+    maxDuration: 60,
+    camera: 'back',
+    success: undefined,
+  };
   state = {
     isOpened: false,
     data: [],
   };
   // 上传入口
   onUp = () => {
-    const { type = ['image'] } = this.props;
+    const { type } = this.props;
     if (type.length === 1 && type[0] === 'image') {
       this.onUpImage();
     }

@@ -1,4 +1,5 @@
 import Taro from '@tarojs/taro';
+import HTTP_STATUS from '@/utils/http';
 // import '@tarojs/async-await';
 
 export const apiRoot = 'http://localhost:9527';
@@ -17,19 +18,31 @@ export default async function request(api, params) {
     },
   }).then(
     (data) => {
-      // if (data.data.code === 13002) {
-      //   Taro.clearStorage();
-      //   Taro.navigateTo({
-      //     url: '/pages/login/index',
-      //   });
-      // }
-      // if (data.data.code === 500) {
-      //   Taro.clearStorage();
-      //   Taro.navigateTo({
-      //     url: '/pages/login/index',
-      //   });
-      // }
-      return data.data;
+      const STATUS = data.statusCode;
+      if (data.statusCode === 200) {
+        if (data.data.code === 13002) {
+          Taro.setStorageSync('token', '');
+          Taro.navigateTo({
+            url: '/pages/login/index',
+          });
+        }
+        if (data.data.code === 500) {
+          Taro.clearStorage();
+          Taro.navigateTo({
+            url: '/pages/login/index',
+          });
+        }
+        return data.data;
+      }
+      if (data.statusCode) {
+        Taro.showToast({
+          title: HTTP_STATUS[STATUS],
+          icon: 'none',
+          mask: true,
+          duration: 2000,
+        });
+        return Promise.reject({ desc: HTTP_STATUS[STATUS], code: STATUS });
+      }
     },
     (err) => {
       // eslint-disable-next-line no-console

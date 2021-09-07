@@ -22,6 +22,8 @@ const demo = ()=>{
  * @param {*} uploadFile 上传到服务器的方法
  * @param {*} limit 限制可上传数量
  * @param {*} style 容器样式，默认 Grid 布局
+ * @param {*} data 渲染的数组
+ * @param {*} deleteChange 点击删除时触法
  */
 /**
  * type.includes('image')

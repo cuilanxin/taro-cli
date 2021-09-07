@@ -18,6 +18,7 @@ export default async function request(api, params) {
     },
   }).then(
     (data) => {
+      Taro.hideLoading();
       const STATUS = data.statusCode;
       if (data.statusCode === 200) {
         if (data.data.code === 13002) {
@@ -41,7 +42,8 @@ export default async function request(api, params) {
           mask: true,
           duration: 2000,
         });
-        return Promise.reject({ desc: HTTP_STATUS[STATUS], code: STATUS });
+        // Promise.reject({ desc: HTTP_STATUS[STATUS], code: STATUS });
+        return;
       }
     },
     (err) => {

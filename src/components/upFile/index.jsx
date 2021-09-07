@@ -15,6 +15,8 @@ import './index.scss';
  * @param {*} uploadFile 上传到服务器的方法
  * @param {*} limit 限制可上传数量
  * @param {*} style 容器样式，默认 Grid 布局
+ * @param {*} data 渲染的数组
+ * @param {*} deleteChange 点击删除时触法
  */
 /**
  * type.includes('image')
@@ -28,26 +30,13 @@ import './index.scss';
  * @param {*} camera='back'  默认拉起的是前置或者后置摄像头 front=前 back=后
  */
 class UpFile extends React.PureComponent {
-  static defaultProps = {
-    type: ['image'],
-    count: 9,
-    sizeType: ['original', 'compressed'],
-    sourceType: ['album', 'camera'],
-    fail: undefined,
-    complete: undefined,
-    limit: undefined,
-    compressed: true,
-    maxDuration: 60,
-    camera: 'back',
-    success: undefined,
-  };
   state = {
     isOpened: false,
     data: [],
   };
   // 上传入口
   onUp = () => {
-    const { type } = this.props;
+    const { type = ['image'] } = this.props;
     if (type.length === 1 && type[0] === 'image') {
       this.onUpImage();
     }
@@ -119,24 +108,44 @@ class UpFile extends React.PureComponent {
   update = (list) => {
     const { success } = this.props;
     if (typeof success === 'function') {
-      Promise.resolve(() => {
-        return success(list);
-      }).then((data) => this.setState({ data: [...this.state.data, ...data] }));
+      Taro.showLoading({
+        title: '上传中',
+        mask: true,
+      });
+      new Promise((resolve, reject) => {
+        success(resolve, reject, list, this.props.id);
+      }).then(
+        (data) => {
+          Taro.hideLoading();
+          this.setState({ data: [...this.state.data, ...data] });
+        },
+        (err) => {
+          Taro.hideLoading();
+          Taro.showToast({
+            title: err.message,
+            icon: 'none',
+            mask: true,
+            duration: 2000,
+          });
+        },
+      );
     } else {
       this.setState({ data: [...this.state.data, ...list] });
     }
   };
   // 删除
-  deleteImage = (e, path) => {
+  deleteImage = (e, path, index) => {
     e.stopPropagation();
-    this.setState({ data: this.state.data.filter((item) => item.path !== path) });
+    this.props.deleteChange && this.props.deleteChange(this.props.id, path, index);
+    this.setState({ data: this.state.data.filter((item) => item.path !== path.path) });
   };
   // 查看大图
   examine = (e, path, current) => {
     e.stopPropagation();
+    const { data } = this.state;
     const sources = [];
-    for (let i = 0; i < this.state.data.length; i++) {
-      const item = this.state.data[i];
+    for (let i = 0; i < data.length; i++) {
+      const item = data[i];
       if (item.type === 'image') {
         sources.push({
           ...item,
@@ -152,8 +161,7 @@ class UpFile extends React.PureComponent {
         });
       }
     }
-    // eslint-disable-next-line no-undef
-    wx.previewMedia({
+    Taro.previewMedia({
       sources,
       current,
       showmenu: false,
@@ -178,7 +186,7 @@ class UpFile extends React.PureComponent {
                 <View className="up-file-image-box">
                   <Image className="up-file-image" src={item.path} onClick={(e) => this.examine(e, item, index)} />
                 </View>
-                <View className="up-file-image-close" onClick={(e) => this.deleteImage(e, item.path)}>
+                <View className="up-file-image-close" onClick={(e) => this.deleteImage(e, item, index)}>
                   +
                 </View>
                 {timer && (

@@ -1,4 +1,4 @@
-# taro2.x
+# taro3.x
 
 基于 [taro](https://taro-ui.jd.com/) 开发的 H5 & 微信小程序。
 

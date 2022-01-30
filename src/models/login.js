@@ -17,13 +17,12 @@ export default {
         password: payload.codeValue,
         type: payload.type,
       });
-      Taro.hideLoading();
       if (data && data.code === 1) {
         Taro.setStorageSync('token', data.token);
-        Taro.getApp().power(() => Taro.reLaunch({ url: '/pages/home/index' }));
+        Taro.getApp().$app.powerLink(() => Taro.reLaunch({ url: '/pages/home/index' }));
       } else {
         Taro.atMessage({
-          message: data.message,
+          message: data?.message,
           type: 'warning',
         });
       }
@@ -43,11 +42,10 @@ export default {
         return data.codeValue;
       } else if (data) {
         Taro.atMessage({
-          message: data.message,
+          message: data?.message,
           type: 'warning',
         });
       }
-      Taro.hideLoading();
     },
   },
   reducers: {

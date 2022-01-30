@@ -15,7 +15,6 @@ export default {
         mask: true,
       });
       const data = yield call(getList, {});
-      Taro.hideLoading();
       if (data && data.code === 1) {
         yield put({
           type: 'update',
@@ -38,7 +37,6 @@ export default {
         list: home.data,
       }));
       const data = yield call(getPageList, { page });
-      Taro.hideLoading();
       if (data && data.code === 1) {
         yield put({
           type: 'update',

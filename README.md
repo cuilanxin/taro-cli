@@ -21,3 +21,11 @@ $ yarn build  # build 模式（去掉 --watch 参数） 将不会监听文件修
 ```shell
 $ yarn run mock
 ```   
+
+# 登录
+
+手机号: 符合 /^1[34578]\d{9}$/ 校验即可   
+验证码自动获取
+
+账号: admin   
+密码: admin

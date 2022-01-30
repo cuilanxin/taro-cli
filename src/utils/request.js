@@ -43,10 +43,11 @@ export default async function request(api, params) {
           duration: 2000,
         });
         // Promise.reject({ desc: HTTP_STATUS[STATUS], code: STATUS });
-        return;
+        return data.data;
       }
     },
     (err) => {
+      Taro.hideLoading();
       // eslint-disable-next-line no-console
       console.log(`这是接口${api}请求错误错误: `, err);
     },

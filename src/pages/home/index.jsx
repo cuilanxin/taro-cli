@@ -13,8 +13,10 @@ import './index.scss';
 }))
 class Home extends React.Component {
   componentDidMount() {
-    this.props.dispatch({
-      type: 'home/getList',
+    Taro.getApp().$app.powerData(() => {
+      this.props.dispatch({
+        type: 'home/getList',
+      });
     });
   }
   dropChildren = () => <View>123123</View>;

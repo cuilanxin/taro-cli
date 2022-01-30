@@ -28,8 +28,18 @@ class App extends Component {
       Taro.redirectTo({ url: '/pages/login/index' });
     }
   }
+  // 资源权限
+  powerData = (callback) => {
+    const token = Taro.getStorageSync('token');
+    if (!token) {
+      Taro.navigateTo({ url: '/pages/login/index' });
+      return false;
+    } else {
+      return callback();
+    }
+  };
   // 鉴权
-  power = (path) => {
+  powerLink = (path) => {
     const token = Taro.getStorageSync('token');
     if (!token) {
       Taro.navigateTo({ url: '/pages/login/index' });

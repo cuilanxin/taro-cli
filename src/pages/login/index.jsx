@@ -6,11 +6,13 @@ import { AtInput, AtMessage } from 'taro-ui';
 import logo from '@/static/image/login.png';
 import './index.scss';
 
+const regPhone = /^1[34578]\d{9}$/;
+
 @connect(({ loading }) => ({
   loading: loading.models.login,
 }))
 class Login extends React.Component {
-  timer = Taro.createRef();
+  timer = React.createRef();
   state = {
     phoneValue: '',
     codeValue: '',
@@ -78,8 +80,13 @@ class Login extends React.Component {
   render() {
     const { onChange, onLogin, sendCode } = this;
     const { phoneValue, codeValue, sendStyle, loginStyle, flag, isPwd } = this.state;
-    const phone = !!phoneValue.trim() && phoneValue.trim().length === 11 && phoneValue.trim().indexOf('.') === -1;
-    const isOnLogin = phone && !!codeValue.trim() && codeValue.trim().length >= 4;
+    const phone = regPhone.test(phoneValue);
+    let isLogin = false;
+    if (!isPwd) {
+      isLogin = phone && codeValue >= 4;
+    } else {
+      isLogin = phoneValue.replace(/ /g, '').length >= 5 && codeValue.length >= 5;
+    }
     return (
       <View className="login-container">
         <AtMessage />
@@ -98,14 +105,24 @@ class Login extends React.Component {
 
         <View className="login-container-inp">
           <AtInput
+            name="user"
             title={isPwd ? '账号' : '手机号'}
             type={isPwd ? 'text' : 'number'}
             placeholder={isPwd ? '请输入账号' : '请输入手机号'}
             maxLength={isPwd ? 20 : 11}
+            onBlur={(e) => {
+              if (!isPwd && !regPhone.test(e)) {
+                Taro.atMessage({
+                  message: '手机号不合法',
+                  type: 'warning',
+                });
+              }
+            }}
             value={phoneValue}
             onChange={(event) => onChange('phoneValue', event)}
           />
           <AtInput
+            name="pass"
             title={isPwd ? '密码' : '验证码'}
             placeholder={isPwd ? '请输入密码' : '请输入验证码'}
             type={isPwd ? 'password' : 'number'}
@@ -125,7 +142,7 @@ class Login extends React.Component {
           </AtInput>
         </View>
         <View className="login-container-btn">
-          <View className="login-container-btn-box" onClick={isOnLogin && onLogin} style={isOnLogin ? loginStyle : {}}>
+          <View className="login-container-btn-box" onClick={isLogin && onLogin} style={isLogin ? loginStyle : {}}>
             登陆
           </View>
         </View>
